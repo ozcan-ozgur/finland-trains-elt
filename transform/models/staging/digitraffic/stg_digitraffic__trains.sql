@@ -19,6 +19,8 @@ select
     version,
     payload->>'operatorShortCode' as operator_short_code,
     (payload->>'cancelled')::boolean as is_cancelled,
-    payload->'timeTableRows' as time_table_rows
+    payload->'timeTableRows' as time_table_rows,
+    payload->>'trainCategory'   as train_category,
+    payload->>'trainType'       as train_type
 from latest_train
 where rn = 1

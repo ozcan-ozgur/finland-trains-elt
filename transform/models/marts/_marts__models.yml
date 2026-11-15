@@ -1,0 +1,14 @@
+models:
+  - name: fact_stop_event
+    columns:
+      - name: stop_event_id
+        data_tests:
+          - unique
+          - not_null
+      - name: train_category
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['Commuter', 'Cargo', 'Long-distance', 'Shunting', 'Locomotive', 'On-track machines', 'Test drive']
+              config:
+                severity: warn
