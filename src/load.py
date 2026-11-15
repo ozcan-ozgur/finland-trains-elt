@@ -55,6 +55,7 @@ def load(trains):
 
 
 if __name__ == "__main__":
-    day = "2026-11-12"
-    trains = extract(day)
-    inserted = load(trains)
+    ds="2026-11-15"
+    trains = extract(ds)
+    loaded = load(trains)
+    print(f"{len(trains)} trains extracted, {loaded} trains loaded")
