@@ -1,0 +1,14 @@
+[project]
+name = "finland-trains-elt"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "psycopg[binary]>=3.3.9",
+    "requests>=2.34.2",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.17.5",
+    "yamllint>=1.38.0",
+]
