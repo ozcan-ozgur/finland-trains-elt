@@ -1,0 +1,10 @@
+models:
+  - name: stg_digitraffic__trains
+    columns:
+      - name: train_id
+        data_tests:
+          - unique
+          - not_null
+      - name: version
+        data_tests:
+          - not_null

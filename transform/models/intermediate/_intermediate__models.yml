@@ -1,0 +1,18 @@
+models:
+  - name: int_digitraffic__train_stops_unnested
+    columns:
+      - name: stop_event_id
+        data_tests:
+          - unique
+          - not_null
+      - name: event_type
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['ARRIVAL', 'DEPARTURE']
+      - name: train_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('stg_digitraffic__trains')
+                field: train_id
