@@ -1,0 +1,4 @@
+name: finland_trains
+version: "1.0.0"
+profile: finland_trains
+model-paths: [ "models" ]
