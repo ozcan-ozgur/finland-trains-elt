@@ -8,3 +8,9 @@ models:
       - name: version
         data_tests:
           - not_null
+  - name: stg_digitraffic__stations
+    columns:
+      - name: station_short_code
+        data_tests:
+          - unique
+          - not_null

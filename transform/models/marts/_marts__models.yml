@@ -24,6 +24,12 @@ models:
               arguments:
                 to: ref('dim_dates')
                 field: date_day
+      - name: station_short_code
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_stations')
+                field: station_short_code
 
   - name: dim_trains
     description: "One row per train run (departure date + train number)."
@@ -36,6 +42,13 @@ models:
   - name: dim_dates
     columns:
       - name: date_day
+        data_tests:
+          - unique
+          - not_null
+
+  - name: dim_stations
+    columns:
+      - name: station_short_code
         data_tests:
           - unique
           - not_null

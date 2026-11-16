@@ -3,3 +3,4 @@ sources:
     schema: raw
     tables:
       - name: trains
+      - name: stations
