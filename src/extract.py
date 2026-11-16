@@ -1,5 +1,6 @@
-import requests
 import json
+
+import requests
 
 BASE_URL = "https://rata.digitraffic.fi/api/v1"
 HEADERS = {
@@ -10,6 +11,14 @@ HEADERS = {
 
 def extract(date):
     response = requests.get(f"{BASE_URL}/trains/{date}", headers=HEADERS, timeout=30)
+    response.raise_for_status()
+    return response.json()
+
+
+def extract_stations():
+    response = requests.get(
+        f"{BASE_URL}/metadata/stations", headers=HEADERS, timeout=30
+    )
     response.raise_for_status()
     return response.json()
 

@@ -1,8 +1,10 @@
 import os
 from datetime import date
+
 import psycopg
 from psycopg.types.json import Jsonb
-from extract import extract
+
+from extract import extract, extract_stations
 
 CREATE_SCHEMA = "CREATE SCHEMA IF NOT EXISTS raw"
 
@@ -21,6 +23,21 @@ INSERT_TRAIN = """
 INSERT INTO raw.trains (departure_date, train_number, version, payload)
 VALUES (%s, %s, %s, %s)
 ON CONFLICT (departure_date, train_number, version) DO NOTHING
+"""
+
+CREATE_STATIONS_TABLE = """
+CREATE TABLE IF NOT EXISTS raw.stations (
+    station_short_code text PRIMARY KEY,
+    payload jsonb NOT NULL,
+    loaded_at timestamptz NOT NULL DEFAULT now()
+)
+"""
+
+TRUNCATE_STATIONS = "TRUNCATE raw.stations"
+
+INSERT_STATION = """
+INSERT INTO raw.stations (station_short_code, payload)
+VALUES (%s, %s)
 """
 
 
@@ -46,16 +63,37 @@ def load(trains):
         )
         rows.append(row)
 
-    with psycopg.connect(get_conninfo()) as conn:
-        with conn.cursor() as cur:
-            cur.execute(CREATE_SCHEMA)
-            cur.execute(CREATE_TABLE)
-            cur.executemany(INSERT_TRAIN, rows)
-            return cur.rowcount
+    with psycopg.connect(get_conninfo()) as conn, conn.cursor() as cur:
+        cur.execute(CREATE_SCHEMA)
+        cur.execute(CREATE_TABLE)
+        cur.executemany(INSERT_TRAIN, rows)
+        return cur.rowcount
+
+
+def load_stations(stations):
+    rows = []
+
+    for s in stations:
+        row = (
+            s["stationShortCode"],
+            Jsonb(s),
+        )
+        rows.append(row)
+
+    with psycopg.connect(get_conninfo()) as conn, conn.cursor() as cur:
+        cur.execute(CREATE_SCHEMA)
+        cur.execute(CREATE_STATIONS_TABLE)
+        cur.execute(TRUNCATE_STATIONS)
+        cur.executemany(INSERT_STATION, rows)
+        return cur.rowcount
 
 
 if __name__ == "__main__":
-    ds="2026-11-15"
+    ds = "2026-11-15"
     trains = extract(ds)
     loaded = load(trains)
     print(f"{len(trains)} trains extracted, {loaded} trains loaded")
+
+    stations = extract_stations()
+    loaded_stations = load_stations(stations)
+    print(f"{len(stations)} stations extracted, {loaded_stations} stations loaded")

@@ -1,10 +1,16 @@
 models:
-  - name: fact_stop_event
+  - name: fct_stop_events
     columns:
       - name: stop_event_id
         data_tests:
           - unique
           - not_null
+      - name: train_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_trains')
+                field: train_id
       - name: train_category
         data_tests:
           - accepted_values:
@@ -12,3 +18,24 @@ models:
                 values: ['Commuter', 'Cargo', 'Long-distance', 'Shunting', 'Locomotive', 'On-track machines', 'Test drive']
               config:
                 severity: warn
+      - name: departure_date
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_dates')
+                field: date_day
+
+  - name: dim_trains
+    description: "One row per train run (departure date + train number)."
+    columns:
+      - name: train_id
+        data_tests:
+          - unique
+          - not_null
+
+  - name: dim_dates
+    columns:
+      - name: date_day
+        data_tests:
+          - unique
+          - not_null
