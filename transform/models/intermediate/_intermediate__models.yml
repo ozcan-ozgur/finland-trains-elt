@@ -1,5 +1,5 @@
 models:
-  - name: int_digitraffic__train_stops_unnested
+  - name: int_train_stops_unnested
     columns:
       - name: stop_event_id
         data_tests:

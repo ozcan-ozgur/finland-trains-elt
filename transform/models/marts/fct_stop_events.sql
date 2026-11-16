@@ -1,7 +1,7 @@
 with stops as (
 
     select *
-    from {{  ref('int_digitraffic__train_stops_unnested') }}
+    from {{  ref("int_train_stops_unnested") }}
 
 ),
 
