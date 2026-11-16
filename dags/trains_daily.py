@@ -19,7 +19,11 @@ def trains_daily():
         loaded = load(trains)
         print(f"{len(trains)} trains extracted, {loaded} trains loaded")
 
-    extract_and_load()
+    @task.bash
+    def dbt_build():
+        return "cd /opt/airflow/transform && /opt/airflow/dbt_venv/bin/dbt build"
+
+    extract_and_load() >> dbt_build()
 
 trains_daily()
 

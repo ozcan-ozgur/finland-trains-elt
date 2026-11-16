@@ -35,7 +35,7 @@ services:
       interval: 5s
       retries: 10
   airflow:
-    image: apache/airflow:3.3.2-python3.12
+    build: ./docker/airflow
     command: standalone
     depends_on:
       postgres:
@@ -57,7 +57,7 @@ services:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
       - ./src:/opt/airflow/src
-
+      - ./transform:/opt/airflow/transform
 
 volumes:
   pgdata:
