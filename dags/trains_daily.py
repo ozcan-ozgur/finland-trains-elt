@@ -8,7 +8,7 @@ from load import load
 
 @dag(
     schedule="0 6 * * *",
-    start_date = datetime(2026,11,1),
+    start_date = datetime(2026,8,1),
     catchup=False,
 )
 def trains_daily():

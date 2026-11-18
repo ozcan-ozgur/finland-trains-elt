@@ -2,7 +2,7 @@
 select
     (payload->>'type')::text as station_type,
     (payload->>'latitude')::numeric as latitude,
-    (payload->>'longitude')::numeric as numeric,
+    (payload->>'longitude')::numeric as longitude,
     (payload->>'countryCode')::text as country_code,
     (payload->>'stationName')::text as station_name,
     (payload->>'stationUICCode')::int as station_uic_code,
